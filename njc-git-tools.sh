@@ -8,6 +8,10 @@ git-head-hash() {
   git rev-parse --verify --short HEAD
 }
 
+git-head-longhash() {
+  git rev-parse --verify HEAD
+}
+
 git-current-branch() {
   git rev-parse --abbrev-ref HEAD
 }
@@ -21,8 +25,14 @@ git-unpulled() {
 }
 
 git-pull() {
-  CURRENT_HEAD=$(git-head-hash)
-  git pull --rebase
+  NGT_PREPULL_HEAD=$(git-head-longhash)
+  git pull --rebase && {
+    NGT_POSTPULL_HEAD=$(git-head-longhash)
+    if [ "$NGT_POSTPULL_HEAD" != "$NGT_PREPULL_HEAD" ]; then
+      echo NEW COMMITS
+      git log --oneline ${NGT_PREPULL_HEAD}..HEAD
+    fi
+  }
 }
 
 alias g='git status'
