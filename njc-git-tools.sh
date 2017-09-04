@@ -5,7 +5,7 @@
 # TODO: git diff vs difftool (compare env vars?)
 
 git-head-hash() {
-  git rev-parse HEAD
+  git rev-parse --verify --short HEAD
 }
 
 git-current-branch() {
