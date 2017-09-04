@@ -17,11 +17,11 @@ git-current-branch() {
 }
 
 git-unpushed() {
-  git log --oneline $(git-current-branch)..HEAD
+  git log --oneline origin/$(git-current-branch)..HEAD
 }
 
 git-unpulled() {
-  git log --oneline HEAD..$(git-current-branch)
+  git log --oneline HEAD..origin/$(git-current-branch)
 }
 
 git-pull() {
