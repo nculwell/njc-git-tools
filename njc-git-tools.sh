@@ -26,7 +26,7 @@ git-unpulled() {
 
 git-pull() {
   NGT_PREPULL_HEAD=$(git-head-longhash)
-  git pull --rebase && {
+  git pull --rebase || echo "FAILED" && {
     NGT_POSTPULL_HEAD=$(git-head-longhash)
     if [ "$NGT_POSTPULL_HEAD" != "$NGT_PREPULL_HEAD" ]; then
       echo NEW COMMITS
