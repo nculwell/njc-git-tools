@@ -21,7 +21,7 @@ git-unpushed() {
 }
 
 git-unpulled() {
-  git log --online HEAD..$(git-current-branch)
+  git log --oneline HEAD..$(git-current-branch)
 }
 
 git-pull() {
