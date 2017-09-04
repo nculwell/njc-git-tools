@@ -31,6 +31,7 @@ git-pull() {
     git pull --rebase && {
       NGT_POSTPULL_HEAD=$(git-head-longhash)
       if [ "$NGT_POSTPULL_HEAD" != "$NGT_PREPULL_HEAD" ]; then
+        echo "New commits pulled:"
         echo "$NGT_PULLED_COMMITS"
       fi
     }
