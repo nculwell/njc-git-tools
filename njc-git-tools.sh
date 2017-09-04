@@ -26,11 +26,14 @@ git-unpulled() {
 
 git-pull() {
   NGT_PREPULL_HEAD=$(git-head-longhash)
-  git pull --rebase || echo "FAILED" && {
+  NGT_PREPULL_ORIGIN=$(git rev-parse --verify --short origin/master)
+  git pull --rebase && {
     NGT_POSTPULL_HEAD=$(git-head-longhash)
     if [ "$NGT_POSTPULL_HEAD" != "$NGT_PREPULL_HEAD" ]; then
+      echo PREPULL HEAD: $NGT_PREPULL_HEAD
+      echo POSTPULL HEAD: $NGT_POSTPULL_HEAD
       echo NEW COMMITS
-      git log --oneline ${NGT_PREPULL_HEAD}..HEAD
+      git log --oneline ${NGT_PREPULL_ORIGIN}..HEAD
     fi
   }
 }
