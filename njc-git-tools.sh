@@ -24,6 +24,14 @@ git-unpulled() {
   git log --oneline HEAD..origin/$(git-current-branch)
 }
 
+git-difftool() {
+  git difftool -y "$@"
+}
+
+git-diff() {
+  git diff "$@"
+}
+
 git-pull() {
   git fetch && {
     NGT_PREPULL_HEAD=$(git-head-longhash)
@@ -38,15 +46,20 @@ git-pull() {
   }
 }
 
+# basic abbreviations
 alias g='git status'
 alias ga='git add'
 alias gau='git add -u'
 alias gc='git commit'
+# name of current branch
 alias gcb='git-current-branch'
 # outgoing commits
 alias gout='git-unpushed'
 # incoming commits
 alias ginc='git-unpulled'
+# diff
+alias gd='git-diff'
+alias gdt='git-difftool'
 
 alias fetch='git fetch'
 alias pull='git-pull'
