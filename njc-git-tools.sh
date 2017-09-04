@@ -2,7 +2,7 @@
 
 # Collection of git functions and aliases to make various command-line activities easier.
 
-# TODO: git diff vs difftool
+# TODO: git diff vs difftool (compare env vars?)
 
 git-head-hash() {
   git rev-parse HEAD
