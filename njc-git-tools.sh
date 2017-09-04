@@ -48,3 +48,7 @@ alias gout='git-unpushed'
 # incoming commits
 alias ginc='git-unpulled'
 
+alias fetch='git fetch'
+alias pull='git-pull'
+alias push='git push'
+
