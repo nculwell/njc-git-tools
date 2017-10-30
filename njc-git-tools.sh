@@ -4,6 +4,14 @@
 
 # TODO: git diff vs difftool (compare env vars?)
 
+if [ -z "$NGT_GIT_LOG_FORMAT" ]; then
+  export NGT_GIT_LOG_FORMAT='--format=%Cred%h %Cblue[%aE] %Creset%s'
+fi
+
+git-user-org() {
+  git config user.email | sed 's/^.*@//'
+}
+
 git-head-hash() {
   git rev-parse --verify --short HEAD
 }
@@ -16,12 +24,22 @@ git-current-branch() {
   git rev-parse --abbrev-ref HEAD
 }
 
+if [ -n "$NGT_ORG_DOMAIN" ]; then
+  alias log='git log "$NGT_GIT_LOG_FORMAT" | sed "s/@$NGT_ORG_DOMAIN//" | head'
+else
+  alias log='git log "$NGT_GIT_LOG_FORMAT" | head'
+fi
+
+git-log() {
+  git log "$NGT_GIT_LOG_FORMAT" "$@" | sed "s/@$(git-user-org)\\]/]/" | head
+}
+
 git-unpushed() {
-  git log --oneline origin/$(git-current-branch)..HEAD
+  git-log origin/$(git-current-branch)..HEAD
 }
 
 git-unpulled() {
-  git log --oneline HEAD..origin/$(git-current-branch)
+  git-log HEAD..origin/$(git-current-branch)
 }
 
 git-difftool() {
@@ -55,6 +73,7 @@ alias gc='git commit'
 alias gcb='git-current-branch'
 # outgoing commits
 alias gout='git-unpushed'
+alias mine='git-unpushed'
 # incoming commits
 alias ginc='git-unpulled'
 # diff
@@ -64,4 +83,8 @@ alias gdt='git-difftool'
 alias fetch='git fetch'
 alias pull='git-pull'
 alias push='git push'
+
+alias gd='git difftool -y'
+alias gdc='git difftool -y --cached'
+alias log='git-log'
 
