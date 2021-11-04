@@ -12,6 +12,13 @@ git-user-org() {
   git config user.email | sed 's/^.*@//'
 }
 
+# Add backslashes to '(', ')', '|' and '.'. Makes the first three into grep operators
+# and makes the last ('.') into a literal character. This function is convenient
+# because writing all those backslashes gets really tedious.
+escape-grep-pattern() {
+  echo "$1" | sed 's/[()|.]/\\&/g'
+}
+
 git-head-hash() {
   git rev-parse --verify --short HEAD
 }
@@ -35,11 +42,11 @@ git-log() {
 }
 
 git-unpushed() {
-  git-log origin/$(git-current-branch)..HEAD
+  git-log --oneline origin/$(git-current-branch)..HEAD
 }
 
 git-unpulled() {
-  git-log HEAD..origin/$(git-current-branch)
+  git-log --oneline HEAD..origin/$(git-current-branch)
 }
 
 git-difftool() {
@@ -64,6 +71,13 @@ git-pull() {
   }
 }
 
+git-ack() {
+  NGT_BINARY_FILES="zip|tgz|tar"
+  NGT_IGNORE_FILES=$(escape-grep-pattern ".($NGT_BINARY_FILES)\$")
+  echo $NGT_IGNORE_FILES
+  git ls-files -oc --exclude-standard | grep -v "$NGT_IGNORE_FILES" | ack -x "$@"
+}
+
 # basic abbreviations
 alias g='git status'
 alias ga='git add'
@@ -79,6 +93,8 @@ alias ginc='git-unpulled'
 # diff
 alias gd='git-diff'
 alias gdt='git-difftool'
+# search
+alias gack='git-ack'
 
 alias fetch='git fetch'
 alias pull='git-pull'
