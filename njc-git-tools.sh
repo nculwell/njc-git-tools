@@ -71,6 +71,10 @@ git-pull() {
   }
 }
 
+git-push() {
+  git remote | xargs -IR git push --verbose R "$@"
+}
+
 git-ack() {
   NGT_BINARY_FILES="zip|tgz|tar"
   NGT_IGNORE_FILES=$(escape-grep-pattern ".($NGT_BINARY_FILES)\$")
@@ -88,8 +92,10 @@ alias gcb='git-current-branch'
 # outgoing commits
 alias gout='git-unpushed'
 alias mine='git-unpushed'
+alias to-push='git-unpushed'
 # incoming commits
 alias ginc='git-unpulled'
+alias to-pull='git-unpulled'
 # diff
 alias gd='git-diff'
 alias gdt='git-difftool'
@@ -98,7 +104,7 @@ alias gack='git-ack'
 
 alias fetch='git fetch'
 alias pull='git-pull'
-alias push='git push'
+alias push='git-push'
 
 alias gd='git difftool -y'
 alias gdc='git difftool -y --cached'
